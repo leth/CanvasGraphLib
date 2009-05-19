@@ -1,0 +1,92 @@
+* SVN *
+
+Jul 21, 2008 - St.
+  The mocking interface revision.
+
+Jul 14, 2008 - St.
+  Styles assertion fix. Added a raw ajax-requests mocking feature.
+
+Jul 2, 2008 - St.
+  The version 2.0 is out.
+
+Jul 1, 2008 - St.
+  The values debugging system updates, crossbrowser check. The source-compiler updates.
+  The documentation updates.
+
+Jun 30, 2008 - St.
+  Implemented the more nice-looking string representations for the object's debuging
+  in the test error reports. And then added the objects diff block displaying.
+
+Jun 26, 2008 - St.
+  Implemented the ajax-request mocking up for Prototype and MooTools libraries, done
+  some more updates in the mocking functionality. Added the with_mocked method.
+
+Jun 25, 2008 - St.
+  Some structural updates, added the custom assertions auto catch-up from the test-cases
+  declarations.
+
+Jun 22, 2008 - St.
+  Implemented the visual effects mocking functionality for the Prototype and MooTools
+  libraries. The external libraries mocking system changes so it was easily extensible
+
+Jun 20, 2008 - St.
+  Updates in the mocking system. Lots of fixes in the errors reporting module.
+  Crossbrowser check.
+  The version 2.0-rc has been released.
+
+Jun 16, 2008 - St.
+  Implemented the internal diff functionality, added the assert_called and assert_not_called
+  methods. Some updates in the mocking up methods aliaces.
+  The version 2.0-beta has been released.
+
+March 5, 2008 - St.
+  Implemented some new features, added the before_all, after_all, run_on_load
+  methods. Changed the assertions system so it's now possible to add custom assertions.
+
+March 2, 2008 - St.
+  Finished with the Prototype dependencies removing. At last the project
+  run free and have release the version 2.0-alpha.
+
+February 20, 2008 - St.
+  Working on the Prototype dependencies removing. Removed the Array
+  and Element extentions dependencies
+
+February 19, 2008 - St.
+  Working on the Prototype dependencies removing. Removed the basic
+  Event and Element objects dependencies
+
+January 22, 2008 - St.
+  The version 1.0 has been released
+
+January 22, 2008 - St.
+  The test-cases skipping feature implemented. Added some layouts to filter the tests
+  on skipped/active ones. Added the elapsed time markers for the test-cases.
+  Documentation updates.
+
+January 19, 2008 - St.
+  The version 1.0-rc has been released.
+
+January 19, 2008 - St.
+  The test-reporting system was refactored and split onto several classes.
+  Updated the reports view. Added the test-summary progress bar. Some tidies up.
+
+January 14, 2008 - St.
+  Fixes in the code to make the Prototype v 1.5 working (The Fires are for FF only)
+
+January 13, 2008 - St.
+  The version 1.0-beta had been released.
+
+January 11, 2008 - St.
+  Added the events-firing feature. Changes in the documentation.
+
+January 04, 2008 - St.
+  In order to change the messaging system, defined the exceptions collection.
+  Changed the assert_throws and assert_nothing_thrown interfaces to be able
+  to check particular exception types.
+
+January 02, 2008 - St.
+  Added the rake build task to be able to create fresh project versions
+
+January 02, 2008 - St.
+  Got all the old tests moved in the new structure, some of them are 
+  allready had some refactoring on them.

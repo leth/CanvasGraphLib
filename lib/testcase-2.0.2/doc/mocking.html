@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+  <title>TestCase - Documentation - The Mocking Functionality Description</title>
+  <link rel="StyleSheet" type="text/css" href="doc.css" />
+</head>
+<body>
+  <h1>TestCase - Documentation</h1>
+  <h2>Index</h2>
+  <p>
+    <ul>
+      <li><a href="usage.html">Terms of Usage</a></li>
+      <li><a href="api.html">API-Documentation</a></li>
+      <li><a href="custom_assertions.html">Custom Assertions</a></li>
+      <li><a href="mocking.html">The Mocking Up Functionality Description</a></li>
+      <li><a href="fires.html">The Events Firing Functionality Description</a></li>
+      <li><a href="contribute.html">The Contributing And Coding Conventions Description</a></li>
+    </ul>
+  </p>
+  
+  <h2>The methods mocking functionality.</h2>
+  <p>
+    In general there are only two methods for the mocking stuffs. <code>mockup(object, method_name, mock)</code> (or <code>mockUp(...))</code>
+    to mock an object's method up and <code>undoMockup(object, method_name)</code> (<code>undo_mockup(...)</code>) to get the original method back.
+  </p>
+  
+  <h3>Example</h3>
+  <p>
+    Say we have got an element with a method which will hide the element smoothly by calling an effect library.
+    The problem here is that the action will take time but we need to test it in the run-time. So we mock up the
+    effect library method so it was display the elemen immidiately.
+    <code class="container">
+      testAnObjectMocking: function() {
+        // this should be somewhere in your code
+        var some_element = $('some-element');
+        some_element.hideSmoothly = function() {
+          Effect.Fade(this, {duration: 0.4});
+        };
+        
+        this.mockUp(Effect, 'Fade', function() {
+          some_element.style.display = 'none';
+        });
+        
+        this.assert_visible(some_element);
+        some_element.hideSmoothly();
+        this.assert_hidden(some_element);
+      }
+    </code>
+  </p>
+  
+  <h3>NOTE</h3>
+  <p>
+    In general you can mockup an object's methods and a class prototype methods, but note, the instance level mocks have got
+    a higher priority than the prototype ones. So if you have mocked up an prototype with one mock1 and the prototype object with
+    mock2, then for all the prototype instances (future and existing ones) you'll have the mock1 working on, but for the object
+    which you have mocked up with mock2, you'll have the mock2 function working.
+  </p>
+  <p>
+    <code class="container">
+      var AClass = Class.create();
+      AClass.prototype = {
+        sayHello: function() {
+          alert('hello');
+        }
+      };
+      ......
+      testAClassSayHello: function() {
+        var obj1 = new AClass();
+        var obj2 = new AClass();
+        
+        this.mockUp(obj1, 'sayHello', function() {
+          alert('hi there');
+        });
+        this.mockUp(AClass.prototype, 'sayHello', function() {
+          alert('mocked hello');
+        });
+        
+        var obj3 = new AClass();
+        
+        obj1.sayHello(); // <- will say 'hi there'
+        obj2.sayHello(); // <- will say 'mocked hello'
+        obj3.sayHello(); // <- will say 'mocked hello'
+      }
+    </code>
+  </p>
+  
+  <h3>TestCase 2.0 mocking features.</h3>
+  <p>
+    Since the version 2.0, the library has some important updates in the mocking system.
+  </p>
+  <p>
+    First, the wrapping mocking methods were added. Those methods apply arguments for mocking as 
+    usual <code>mockUp</code> method, and additionaly get a callback function attribute. The methods
+    runs the mockup procedure, then executes the given callback function in the given scope, and after
+    all, undos the maden mock up.
+  </p>
+  <p>
+    <code>with_mocked(Object object, String method_name, Function mock, Function callback[, Object scope])</code>
+  </p>
+  <p>
+    And we have got some aliaces for the method <code>withMocked()</code>, <code>with_mock()</code>,
+    <code>withMock()</code> 
+  </p>
+  <h4>Example</h4>
+  <p>
+    <code class="container">
+      test_mocked_function: function() {
+        var obj = {
+          result: function() {
+            return 'Something terrible';
+          }
+        };
+        
+        this.with_mocked(obj, 'result', function() { return 'acceptable'; },
+          
+          // inside the function the object will use the mocked method
+          function() {
+            this.assert_equal('acceptable', obj.result());
+          },
+          
+          this // <- optional scope element
+        );
+        
+        // outside the call the object will use the native method
+        this.assert_equal('Something terrible', obj.result());
+      }
+    </code>
+  </p>
+  
+  <h4>Effects Mocking</h4>
+  <p>
+    The second important change is that dispite the fact that the library no more depndent on the Prorotype library
+    we don't forget our dear friends. You still can use the effects mocking feature as you used to:
+  </p>
+  <p>
+    <code class="container">
+      test_menu: function() {
+        this.mockup_effects();
+        
+        this.assert_hidden('menu-element');
+        
+        Effect.BlindDown('menu-element');
+        
+        this.assert_visible('menu-element');
+        
+        this.undo_effects_mockup();
+      }
+    </code>
+  </p>
+  <p>
+    More important now you can do just the same the MooTools framework. Use just the same methods 
+    <code>mockup_effects()</code> and <code>undo_effects_mockup()</code> and all your MooTools effects
+    will happened immidiatelly. You don't need to change anything, the library will automatically find out
+    which framework you are using.
+  </p>
+  <p>
+    And a wrapping method for the effects mocking has been added to. It works a similar way as the mocking one.
+  </p>
+  <p>
+    <code class="container">
+      test_menu: function() {
+        this.with_mocked_effects(function() {
+          this.assert_hidden('menu-element');
+          Effect.BlindDown('menu-element');
+          this.assert_visible('emnu-element');
+        }, this);
+      }
+    </code>
+  </p>
+  
+  <h4>Ajax mocking</h4>
+  <p>
+    And the third most important thing about the new mocking system is the ajax-requests mocking. Yes, dear sir, 
+    we have got the candy. Currently, it works with the Prototype and MooTools frameworks.
+  </p>
+  <p>
+    The principle is simple, you decide what the request should return in hash like this.
+    You can support any numbers of keys you like, all of them are optional
+  </p>
+  <p>
+    <code class="container">
+      {
+        text: 'some text you like',         // ''   by default
+        xml: your_xml_object,               // null by default
+        status: 200,                        // 200  by default
+        headers: ['Content-type: text/xml'] // []   by default
+      }
+    </code>
+  </p>
+  <p>
+    And an average ajax-test with mocking might looks like that.
+  </p>
+  <p>
+    <code class="container">
+      test_ajax_load: function() {
+        var block = $('some-block');
+        this.assert_equal('', block.innerHTML); // say the block is empty by default
+        
+        this.mockup_ajax({text: '&lt;p>some text&lt;/p>'});
+        
+        // doing some call
+        new Ajax.Updater('some-block', '/some/url');
+        
+        // the block will be updated right now
+        this.assert_equal('&lt;p>some text&lt;/p>', block.innerHTML);
+        
+        this.undo_ajax_mockup():
+      }
+    </code>
+  </p>
+  <p>
+    And sure we have added a wrapped ajax-mocking method. It will mockup your ajax engine on the beginning
+    and undo the mockup at the end.
+  </p>
+  <p>
+    <code class="container">
+      test_ajax_load: function() {
+        this.with_mocked_ajax({ status: 404, text: 'not found' },
+          function() {
+            // all the ajax calls here will return status 404 and test 'not found'.
+          },
+          this
+        );
+      }
+    </code>
+  </p>
+</body>
+</html>

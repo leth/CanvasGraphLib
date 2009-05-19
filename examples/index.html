@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>untitled</title>
+<script src="../lib/mootools/mootools-1.2.1-core-nc.js" type="text/javascript" charset="utf-8"></script>
+<!-- <script src="../lib/mootools/mootools-1.2.1-core-yc.js" type="text/javascript" charset="utf-8"></script> -->
+<script src="../src/components.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/tree/tree.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/tree/boundsTree.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/tree/mouseEventTree.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/layout/LayoutEngine.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/layout/force/ForceLayoutEngine.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/layout/force/SpringForceComponent.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/layout/force/FADEForceComponent.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/layout/force/FrictionForceComponent.js" type="text/javascript" charset="utf-8"></script>
+<script src="../src/engine.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="application/x-javascript">
+
+window.addEvent('domready', function(){
+	window.gEngine = new GraphEngine('canvas');
+	
+	var node1 = new GraphNode(0);
+	node1.x = 100; node1.y = 100;
+	var node2 = new GraphNode(1);
+	node2.x = 50; node2.y = 50;
+	var node3 = new GraphNode(2);
+	node3.x = 70; node3.y = 170;
+	var node4 = new GraphNode(3);
+	node4.x = 20; node4.y = 30;
+	
+	gEngine.addNode(node1);
+	gEngine.addNode(node2);
+	gEngine.addNode(node3);
+	gEngine.addNode(node4);
+	
+	gEngine.addEdge(new GraphEdge(0, node1, node2));
+	gEngine.addEdge(new GraphEdge(1, node2, node3));
+	gEngine.addEdge(new GraphEdge(2, node3, node4));
+	
+	// for (var i = 0; i < 100; i++)
+	// 	gEngine.addNode(new GraphNode(4 + i));
+	
+	gEngine.start();
+	$('status').set('text', 'Success!');
+});
+
+	</script>
+</head>
+<body>
+	<h1 id='status'>Fail :(</h1>
+	<div style='float: right;'>
+		<p id='top'></p>
+		<p id='one'>1</p>
+		<p id='two'>2</p>
+		<p id='three'>3</p>
+		<p id='four'>4</p>
+		<h3>Co-ords</h3>
+		<p id='five'></p>
+		<p id='text'></p>
+	</div>
+	<canvas id="canvas" width="500" height="500"></canvas>
+</body>
+</html>

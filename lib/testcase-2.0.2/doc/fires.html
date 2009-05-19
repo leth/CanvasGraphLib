@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+  <title>TestCase - Documentation - The Events Firing Functionality Description</title>
+  <link rel="StyleSheet" type="text/css" href="doc.css" />
+</head>
+<body>
+  <h1>TestCase - Documentation</h1>
+  <h2>Index</h2>
+  <p>
+    <ul>
+      <li><a href="usage.html">Terms of Usage</a></li>
+      <li><a href="api.html">API-Documentation</a></li>
+      <li><a href="custom_assertions.html">Custom Assertions</a></li>
+      <li><a href="mocking.html">The Mocking Up Functionality Description</a></li>
+      <li><a href="fires.html">The Events Firing Functionality Description</a></li>
+      <li><a href="contribute.html">The Contributing And Coding Conventions Description</a></li>
+    </ul>
+  </p>
+  
+  <h2>The Events Firing Functionality Description</h2>
+  <p>
+    Since TestCase v. 1.0, the library provides the events test fires functionality. That means you can fire
+    your own test events on your elements in the testing environment and test your page response right in your
+    test-cases.
+  </p>
+  
+  <p>
+    The functionality is generally crossbrowsing. It was tested with FF (1.5, 2.0, 3.0), Opera, IE (6 and 7), Konqueror and Safari.
+    But case all of the browses are different, with own unique "features", some stuffs works different and some don't work at all.
+    So be ware.
+  </p>
+  
+  <p>
+    With Safari and Konqueror, currently, you cannot specify the key-codes on the keyboard events correctly.
+    The events will get fired up, but you won't get any correct key-codes from them. Looking forward for a solution.
+  </p>
+  
+  <p>
+    You may pass the following options with the mouse events
+    <ul>
+      <li>pointerX:   (default 0) - the cursor left-position</li>
+      <li>pointerY:   (default 0) - the cursor top-position</li>
+      <li>button:     (default 0) - the button number</li>
+      <li>bubbles:    (default true) - a flag if the event should bubble up</li>
+      <li>cancelable: (default true) - a flag if the event should be cancelable</li>
+      <li>altKey:     (default false) - a flag if there's an alt-key pressed</li>
+      <li>ctrlKey:    (default false) - a flag if there's a ctrl-key pressed</li>
+      <li>shiftKey:   (default false) - a flag if there's a shift-key pressed</li>
+      <li>metaKey:    (default false) - a flag if there's a meta-key pressed</li>
+    </ul>
+  </p>
+  
+  <p>
+      With the keyboard events, you can specify the follwoing options
+      <ul>
+      <li>bubbles:    (default true) - a flag if the event should bubble up</li>
+      <li>cancelable: (default true) - a flag if the event should be cancelable</li>
+      <li>altKey:     (default false) - a flag if there's an alt-key pressed</li>
+      <li>ctrlKey:    (default false) - a flag if there's a ctrl-key pressed</li>
+      <li>shiftKey:   (default false) - a flag if there's a shift-key pressed</li>
+      <li>metaKey:    (default false) - a flag if there's a meta-key pressed</li>
+    </ul>
+  </p>
+  
+  <p>
+    The usage by itself is pretty simple and plain. Just pass your element in some of the methods, and if
+    you are trying to call the common mouse/keyboar event firing methods, then specify the event-name.
+    Downcased and without the 'on' prefix. Like that.
+    
+    <code class="container">
+      this.fire_click('element-id');
+      this.fire_mouse_event(element, 'mouseover', { shiftKey: true });
+      
+      this.fire_key_press(element, Event.KEY_ESC);
+      var event = this.fire_key_event('element', 'keydown', Event.KEY_UP);
+    </code>
+  </p>
+  
+  <p>
+    Note that each of the methods return the fired event object. So you can get it right there if you like.
+  </p>
+  
+  <p>That's all, enjoy!</p>
+  <p>&nbsp;</p>
+</body>
+</html>

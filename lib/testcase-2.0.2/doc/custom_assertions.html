@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+  <title>TestCase - Documentation - Api-Documentation</title>
+  <link rel="StyleSheet" type="text/css" href="doc.css" />
+</head>
+<body>
+  <h1>TestCase - Documentation</h1>
+  <h2>Index</h2>
+  <p>
+    <ul>
+      <li><a href="usage.html">Terms of Usage</a></li>
+      <li><a href="api.html">API-Documentation</a></li>
+      <li><a href="custom_assertions.html">Custom Assertions</a></li>
+      <li><a href="mocking.html">The Mocking Up Functionality Description</a></li>
+      <li><a href="fires.html">The Events Firing Functionality Description</a></li>
+      <li><a href="contribute.html">The Contributing And Coding Conventions Description</a></li>
+    </ul>
+  </p>
+
+  <h2>Custom Assertions</h2>
+  <p>
+    Since the version 2.0 the TestCase library provides the user an ability to define own assertion methods
+    which will behave just like any built-in ones. This means that your assertions will be counted
+    during the test and your assertions will be processed properly during test-errors handling.
+  </p>
+  <p>
+    There are some ways to define your own assertions. The first one and the most natural is
+    to define them right in the test-code.
+  </p>
+  <p>
+    <code class="container">
+      var Test = TestCase.create({
+        assert_something: function() {},
+        assert_something_else: function() {},
+        
+        test_something: function() {
+          this.assert_something();
+          this.assert_something_else();
+        }
+      });
+    </code>
+  </p>
+  <p>
+    The main rule here is that your assertion name should start with 'assert'. You can use the camelized
+    or underscored style, whatever you use, you'll have camelized/underscored aliaces automatically.
+  </p>
+  <p>
+    The other way to define your own assertions is to extend an existing test-case by calling the
+    <code>.extend()</code> class method.<br/>
+    <b>NOTE:</b> Don't use your framework Object.extend() functionality for the purpose, it will not work.
+  </p>
+  <p>
+    <code class="container">
+      var Test = TestCase.create({....});
+      Test.extend({
+        assertSomething: function() {}
+      });
+    </code>
+  </p>
+  <p>
+    The third way allows you to define custom assertions in run-time. Say in the <code>setUp()</code>
+    method call.
+  </p>
+  <p>
+    <code class="container">
+      var Test = TestCase.create({
+        setup: function() {
+          // creating one assertion at once
+          this.add_assertion('assert_something', function() {
+            // the assertion body
+          });
+          
+          // creating several assertions in a oneshot
+          this.add_assertions({
+            assert_something_else: function() {
+            },
+            assert_something_more: function() {
+            }
+          });
+        },
+        
+        test_something: function() {
+          this.assert_something();
+          this.assert_something_else();
+          this.assert_something_more();
+        }
+      });
+    </code>
+  </p>
+  
+  <h3>Custom assertions filling up</h3>
+  <p>
+    To make your assertions working you should fill them up with some code which will interact with the system.
+    Generally there are two methods for the purpose.
+  </p>
+  <p>
+    The first of them is for handling simple problems which have only a text, 
+    just to notify the user that the assertion is failed
+  </p>
+  <p>
+    <code>throw_problem(String problem_text[, String user_message])</code>
+  </p>
+  <p>
+    The second one is for brocken expectations, when you say compare things and need to show the user
+    what you expected and what you get. Or for any another cases when you want to show in the error report
+    two values, expected and received.
+  </p>
+  <p>
+    <code>throw_unexp(mixed expected_value, mixed received_value[, String user_messagep[, boolean format_values]])</code>
+  </p>
+  <p>
+    The last boolean option defines if the error-reporter should create some nice string representations for the given
+    values and if possible show the values diff sequence. If it's false or not specified, the expected and received
+    values which you put into the method will be converted to strings by the browser rules.
+  </p>
+  <p>
+    An average assertions code might looks like that
+  </p>
+  <p>
+    <code class="container">
+      assert_something: function(something, user_message) {
+        if (something.wrong()) {
+          this.throw_problem('Something wrong', user_message);
+        }
+      },
+      
+      assert_something_else: function(something, something_else, user_message) {
+        if (something.wrong() && something.state() != something_else.state()) {
+          this.throw_unexp(
+            'Expected state: '+something.state(),
+            something_else.state(),
+            user_message
+          );
+        }
+      },
+      
+      assert_something_more: function(object1, object2, user_message) {
+        if (this.some_conditions_happened()) {
+          if (object1 !== object2) {
+            this.throw_unexp(
+              object1, object2, user_message, 
+              true // <- the fourth option tells the system to show a nice string representation of the objects
+            );
+          }
+        }
+      }
+    </code>
+  </p>
+  <p>
+    For more help, you can use various internal util methods of the library. Some of them are described in the <a href="api.html">API-Documentation</a>
+  </p>
+</body>
+</html>

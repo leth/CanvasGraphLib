@@ -1,0 +1,50 @@
+html, body{
+  font: 9pt normal Verdana;
+  font-family: Verdana;
+  padding-bottom: 10pt;
+}
+body{
+  margin: 0 100pt;
+}
+code {
+  background: #FEE;
+}
+code.container{
+  background: white;
+  display: block;
+  margin: 0;
+  white-space: pre;
+  border: 1px solid brown;
+  border-left-width: 4px;
+  padding: 0;
+}
+h1, h2, h3, h4 {
+  font-family: Helvetica;
+}
+
+table.methods-list {
+  width: 100%;
+  border-collapse: collapse;
+}
+table.methods-list th {
+  background: #EEE;
+  color: #800;
+}
+table.methods-list th, table.methods-list td {
+  text-align: left;
+  padding: 2pt 4pt;
+  vertical-align: middle;
+  border: 1px solid #888;
+}
+table.methods-list td {
+  font-family: monospace;
+}
+table.methods-list td:last-child {
+  font-family: verdana;
+}
+table.methods-list caption {
+  text-align: left;
+  font-weight: bold;
+  font-size: 140%;
+  font-family: Helvetica;
+}

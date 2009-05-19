@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+  <title>TestCase - Documentation - Terms Of Usage</title>
+  <link rel="StyleSheet" type="text/css" href="doc.css" />
+</head>
+<body>
+  <h1>TestCase - Documentation</h1>
+  <h2>Index</h2>
+  <p>
+    <ul>
+      <li><a href="usage.html">Terms of Usage</a></li>
+      <li><a href="api.html">API-Documentation</a></li>
+      <li><a href="custom_assertions.html">Custom Assertions</a></li>
+      <li><a href="mocking.html">The Mocking Up Functionality Description</a></li>
+      <li><a href="fires.html">The Events Firing Functionality Description</a></li>
+      <li><a href="contribute.html">The Contributing And Coding Conventions Description</a></li>
+    </ul>
+  </p>
+  
+  <h2>Terms of usage</h2>
+  <p>
+    One of the general idea of the project is to provide a test environment which the developers could
+    start use right away and follow all their old habits. So we provide a simple API which offers underscored
+    and camelised functions which works the same way and in general have well known by another unit-testing systems
+    semantics.
+  </p>
+  <p>
+    Another main idea of the project is to provide a gui which will not break your existing page layout,
+    design, styles etc. So you could run the test right in your pages environment if you like so. For this reason
+    we have got this popup test-report system. Therefore you can safely include your unit-tests right into your page
+    scripts and run them whenever you like.
+  </p>
+  <p>
+    In additional, since the version 1.0, the reporting system provides some features which allows you
+    to skip/activate the cases right on the report popup, and special select-box which allows you to
+    filter your cases and display/run only the ones you need.
+  </p>
+  <p>
+    <b>NOTE:</b> if you see those goods disabled, that means you have cookies disabled on your browser. We use cookies
+    to keep the changes active between the page reloads. So you should enable cookies if wish to use the features.
+  </p>
+  
+  <h3>Writing tests</h3>
+  <p>
+    The library peresents two public classes <code>TestCase</code> and <code>TestSuite</code>. The first one is
+    the testing base by itself and the second one is a collector for your tests.
+  </p>
+  <p>
+    <h4>General Test Example</h4>
+    <code class="container">
+      var MyTest = TestCase.create({
+      
+        name: "MyTest", // <- this is an optional test identifier, to see it in the test-results
+        
+        testFoo: function() {
+          this.assertTrue(true);
+        },
+        
+        testBla: function() {
+          this.assertFalse(false);
+        }
+      });
+    </code>
+  </p>
+  <p>
+    And there's another class-method which allows you to extend existing test-cases. <code>.extend()</code>
+    <b>NOTE:</b> the method <i>will overwrite</i> methods of your test-case which are already exists.
+  </p>
+  <p>
+    <h4>TestCase extending.</h4>
+    <code class="container">
+      var Test = TestCase.create();
+      Test.extend({
+        testSomething: function() {}
+      });
+    </code>
+  </p>
+  <p>
+    Once you've got a test-class, you can run it in several ways. First, each test has the method
+    <code>run()</code>, which can be called as a static method or as an instance method.
+    <code class="container">
+      // like that
+      MyTest.run();
+      
+      // or like that
+      var test = new MyTest;
+      test.run();
+    </code>
+  </p>
+  <p>
+    Since the version 2.0, there's another test-starting methods <code>runOnLoad()</code> (<code>run_on_load()</code>)
+    which will wire your test to be started when the page is loaded.
+  </p>
+  <p>
+    <h4>Run On Load</h4>
+    <code class="container">
+      var Test = TestCase.create({...});
+      Test.runOnLoad();
+      
+      // or as instance
+      var test = new Test();
+      test.runOnLoad();
+    </code>
+  </p>
+  <p>
+    The second public class <code>TestSuite</code> is just a container for the test-cases. You can put in a test-suite
+    any number of tests you like and when you run the suite it will automatically instance and run all the tests which
+    belongs to it.
+    <h4>TestSuite example</h4>
+    <code class="container">
+      var test_suite = new TestSuite(Test1, Test2, Test3...);
+      
+      // or
+      var test_suite = new TestSuite();
+      test_suite.add(Test1);
+      test_suite.add(Test2, Test3, ...);
+      
+      // you can remove tests out of the list
+      test_suite.remove(Test2);
+      
+      // to run all the suite test, use the run() method
+      test_suite.run();
+      
+      // or run on load
+      test_suite.runOnLoad();
+    </code>
+  </p>
+</body>
+</html>

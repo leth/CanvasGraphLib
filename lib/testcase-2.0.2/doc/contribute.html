@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+  <title>TestCase - Documentation - The Contributing and Coding Conventions</title>
+  <link rel="StyleSheet" type="text/css" href="doc.css" />
+</head>
+<body>
+  <h1>TestCase - Documentation</h1>
+  <h2>Index</h2>
+  <p>
+    <ul>
+      <li><a href="usage.html">Terms of Usage</a></li>
+      <li><a href="api.html">API-Documentation</a></li>
+      <li><a href="custom_assertions.html">Custom Assertions</a></li>
+      <li><a href="mocking.html">The Mocking Up Functionality Description</a></li>
+      <li><a href="fires.html">The Events Firing Functionality Description</a></li>
+      <li><a href="contribute.html">The Contributing And Coding Conventions Description</a></li>
+    </ul>
+  </p>
+  
+  <h2>Disclamer</h2>
+  <p>
+    So, you admaire the tool. Make it then even better! Don't like the project? Make it the way you will like it! 8)
+    Post your response on the project's home forum at <a href="http://rubyforge.org/projects/testcase">http://rubyforge.org/projects/testcase</a>
+    post any found in the project bugs, post your feature requests. Just post your 'hello there!'. We are all easy going people, so welcome!
+  </p>
+  
+  <h2>How to contribute</h2>
+  <p>
+    First you'll need to have the freshest source code from svn. If you don't have Subversion on your machine you'll have to install it first.
+    Then checkout it froum the projects svn source.
+    
+    <code class="container">
+      svn co svn://rubyforge.org/var/svn/testcase/trunk testcase
+    </code>
+  </p>
+  
+  <p>
+    Then once you've got the changes you wanted, go to the project main directory and create the diff file with the same svn util like that.
+    
+    <code class="container">
+      svn diff > your.diff
+    </code>
+  </p>
+  <p>
+    Once you've got the diff, post it on the project's forum, or simple send it to me at nemshilov-g mail,com
+  </p>
+  
+  <p>
+    Simple and plain. And don't forget to test your changes before public them. There are lots of various tests and runners inside
+    the test/ directory.
+  </p>
+  
+  <h2>The Coding Convention</h2>
+  <p>
+    There are nothing special. I just follow the Ruby/Rails coding conventions. Classes/Mixings should be named in the camelized and capitalized
+    style. All the methods and attributes, should be downcased and underscored. The indentation is the same, 2 spaces.
+  </p>
+  
+  <p>
+    The files naming principles are more or less the same.
+  </p>
+  
+  <p>
+    The only thing I would ask from you is make the things having a predictable interface. So the people would as possible less time
+    spend searching your super-interface in the api-documenation.
+  </p>
+  
+  <p>That's all, have fun! 8)</p>
+</body>
+</html>

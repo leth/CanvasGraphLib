@@ -1,0 +1,494 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+  <title>TestCase - Documentation - Api-Documentation</title>
+  <link rel="StyleSheet" type="text/css" href="doc.css" />
+</head>
+<body>
+  <h1>TestCase - Documentation</h1>
+  <h2>Index</h2>
+  <p>
+    <ul>
+      <li><a href="usage.html">Terms of Usage</a></li>
+      <li><a href="api.html">API-Documentation</a></li>
+      <li><a href="custom_assertions.html">Custom Assertions</a></li>
+      <li><a href="mocking.html">The Mocking Up Functionality Description</a></li>
+      <li><a href="fires.html">The Events Firing Functionality Description</a></li>
+      <li><a href="contribute.html">The Contributing And Coding Conventions Description</a></li>
+    </ul>
+  </p>
+  
+  <h2>API-Documentation</h2>
+  <p>
+    In general the project tries to provide the standard unit-testing API in two wariants, camelized and underscored.
+    And additionally, once we all well know who use the Prototype library, the project provides some usual for the Ruby Test::Unit library aliases.
+  </p>
+  
+  <p>
+    <table class="methods-list">
+      <caption>Standard Assertions</caption>
+      <tr>
+        <th>Camelized</th>
+        <th>Underscored</th>
+        <th>Ruby way</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>setUp()</td>
+        <td>setup()</td>
+        <td></td>
+        <td>If exists, called before each test</td>
+      </tr>
+      <tr>
+        <td>tearDown()</td>
+        <td>teardown()</td>
+        <td></td>
+        <td>If exists, called after each test</td>
+      </tr>
+      <tr>
+        <td>beforeAll()</td>
+        <td>before_all()</td>
+        <td></td>
+        <td>If exists, called once before all tests</td>
+      </tr>
+      <tr>
+        <td>afterAll()</td>
+        <td>after_all()</td>
+        <td></td>
+        <td>If exists, called once after all tests</td>
+      </tr>
+      <tr>
+        <td>assertTrue(value[, message])</td>
+        <td>assert_true(...)</td>
+        <td>assert(...)</td>
+        <td>Asserts the given value as true</td>
+      </tr>
+      <tr>
+        <td>assertFalse(value[, message])</td>
+        <td>assert_false(...)</td>
+        <td></td>
+        <td>Asserts the given value as false</td>
+      </tr>
+      <tr>
+        <td>assertNull(value[, message])</td>
+        <td>assert_null(...)</td>
+        <td>assert_nil(...)</td>
+        <td>Assert the give value as null</td>
+      </tr>
+      <tr>
+        <td>assertNotNull(value[, message])</td>
+        <td>assert_not_null(...)</td>
+        <td>assert_not_nil(...)</td>
+        <td>Assert the give value as not null</td>
+      </tr>
+      <tr>
+        <td>assertTypeOf(type, value[, message])</td>
+        <td>assert_type_of(...)</td>
+        <td>assert_kind_of(...)</td>
+        <td>Checks the value type (object, function, number, string, boolean)</td>
+      </tr>
+      <tr>
+        <td>assertInstanceOf(type, value[, message])</td>
+        <td>assert_instance_of(...)</td>
+        <td></td>
+        <td>Checks the value instance type</td>
+      </tr>
+      <tr>
+        <td>assertEqual(original, comparable[, message])</td>
+        <td>assert_equal(...)</td>
+        <td></td>
+        <td>Checks the variables values quality</td>
+      </tr>
+      <tr>
+        <td>assertNotEqual(original, comparable[, message])</td>
+        <td>assert_not_equal(...)</td>
+        <td></td>
+        <td>Checks that the variables have different values</td>
+      </tr>
+      <tr>
+        <td>assertSame(value1, value2[, message])</td>
+        <td>assert_same(...)</td>
+        <td></td>
+        <td>Asserts that the given variables point to the same object.</td>
+      </tr>
+      <tr>
+        <td>assertNotSame(value1, value2[, message])</td>
+        <td>assert_not_same(...)</td>
+        <td></td>
+        <td>Asserts that the given variables do not point to the same object.</td>
+      </tr>
+      <tr>
+        <td>assertMatch(pattern, string[, message])</td>
+        <td>assert_match(...)</td>
+        <td></td>
+        <td>Asserts that the given string matches the given pattern</td>
+      </tr>
+      <tr>
+        <td>assertNotMatch(pattern, string[, message])</td>
+        <td>assert_not_match(...)</td>
+        <td>assert_no_match(...)</td>
+        <td>Asserts that the given string does not matche the given pattern</td>
+      </tr>
+      <tr>
+        <td>assertThrows(func[, scope[, message]])</td>
+        <td>assert_throws(...)</td>
+        <td></td>
+        <td>Getting sure that the given function causes an exception</td>
+      </tr>
+      <tr>
+        <td>assertNothingThrown(func[, scope[, message]])</td>
+        <td>assert_nothing_thrown(...)</td>
+        <td></td>
+        <td>Getting sure that the given function does not raises any exceptions</td>
+      </tr>
+      <tr>
+        <td>assertCalled(object, method_name, func[, scope[, message]])</td>
+        <td>assert_called(...)</td>
+        <td></td>
+        <td>Checks that the given object's method was called during the given function execution</td>
+      </tr>
+      <tr>
+        <td>assertNotCalled(object, method_name, func[, scope[, message]])</td>
+        <td>assert_not_called(...)</td>
+        <td></td>
+        <td>The negative for the assert_called method.</td>
+      </tr>
+    </table>
+    <br/>
+    <table class="methods-list">
+      <caption>Some In-Test Messaging Functionality</caption>
+      <tr>
+        <th>Camelized</th>
+        <th>Underscored</th>
+        <th>Ruby way</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>fail(message)</td>
+        <td>fail(...)</td>
+        <td>flunk(...)</td>
+        <td>Raises a testing error</td>
+      </tr>
+      <tr>
+        <td>debug(vairable)</td>
+        <td>debug(...)</td>
+        <td></td>
+        <td>Alerts a simple string representation of the given variable</td>
+      </tr>
+    </table>
+  </p>
+  <p>&nbsp;</p>
+  <p>
+    Then, once it's a kinda front-side testing framework, in additional, the library
+    has some handy test methods for page elements testing purposes.
+    <table class="methods-list">
+      <caption>Element related Assertions</caption>
+      <tr>
+        <th>Camelized</th>
+        <th>Underscored</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>assertExists(css_rule[, message])</td>
+        <td>assert_exists(...)</td>
+        <td>Checks if an element (or elements) which matches the given css-rule exists on the page</td>
+      </tr>
+      <tr>
+        <td>assertNotExists(css_rule[, message])</td>
+        <td>assert_not_exists(...)</td>
+        <td>Getting sure that there's not such element on the page</td>
+      </tr>
+      <tr>
+        <td>assertHasChild(element, css_rule[, message])</td>
+        <td>assert_has_child(...)</td>
+        <td>Getting sure that the lement has a child element which matches the given css-rule</td>
+      </tr>
+      <tr>
+        <td>assertHasNoChild(element, css_rule[, message])</td>
+        <td>assert_has_no_child(...)</td>
+        <td>Checks that the element has no such child element</td>
+      </tr>
+      <tr>
+        <td>assertHasParent(element, css_rule[, message])</td>
+        <td>assert_has_parent(...)</td>
+        <td>Checks that the given element has a parent element which matches the given css-rule</td>
+      </tr>
+      <tr>
+        <td>assertHasNoParent(element, css_rule[, message])</td>
+        <td>assert_has_no_parent(...)</td>
+        <td>Checks that the given element has no such parent element</td>
+      </tr>
+      <tr>
+        <td>assertVisible(element_or_css_rule[, message])</td>
+        <td>assert_visible(...)</td>
+        <td>Asserts that the given element has not the 'display' style equal 'none' and the 'visiblity' equal 'hidden'</td>
+      </tr>
+      <tr>
+        <td>assertHidden(element_or_css_rule[, message])</td>
+        <td>assert_hidden(...)</td>
+        <td>Asserts that the given element has the 'display' style equal 'none' or the 'visibility' one equal 'hidden'</td>
+      </tr>
+      <tr>
+        <td>assertHasClassName(element, class_name[, message])</td>
+        <td>assert_has_class_name(...)</td>
+        <td>Asserts that the given element has got the given class name</td>
+      </tr>
+      <tr>
+        <td>assertHasNoClassName(element, class_name[, message])</td>
+        <td>assert_has_no_class_name(...)</td>
+        <td>Asserts that the given element has not got the given class name</td>
+      </tr>
+      <tr>
+        <td>assertStyle(element, style_hash[, message])</td>
+        <td>assert_style(...)</td>
+        <td>Asserts the given element has styles out of the given hash and with equal values</td>
+      </tr>
+    </table>
+  </p>
+  <p>&nbsp;</p>
+  
+  <p>
+    Sure that's not all the stuffs. Then we have got the functionality mocking methods. There are only few of them and they
+    are quite plain.
+  </p>
+  
+  <p>
+    <table class="methods-list">
+      <caption>Mocking Methods</caption>
+      <tr>
+        <th>Camelized</th>
+        <th>Underscored</th>
+        <th>More Aliaces</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>mockUp(object, method_name, mock)</td>
+        <td>mockup(...)</td>
+        <td>mock</td>
+        <td>Mocks the given object method with the given mock by the method name (a string name)</td>
+      </tr>
+      <tr>
+        <td>undoMockup(object, method_name)</td>
+        <td>undo_mockup(...)</td>
+        <td>undo_mock, undoMock, undoMockUp</td>
+        <td>Undos the object method mocking-up and gets back the original method</td>
+      </tr>
+      <tr>
+        <td>withMocked(object, method_name, mock, callback[, scope])</td>
+        <td>with_mocked(...)</td>
+        <td>with_mock, withMock</td>
+        <td>Wrappes the callback run with mocking and mocking_undo calls with the given arguments</td>
+      </tr>
+      <tr>
+        <td>mockupEffects()</td>
+        <td>mockup_effects()</td>
+        <td>mockUpEffects, mockEffects, mock_effects</td>
+        <td>Mockups the hidding/appearing effects from the script.aculous library, macking them happen immidiately</td>
+      </tr>
+      <tr>
+        <td>undoEffectsMockup()</td>
+        <td>undo_effects_mockup()</td>
+        <td>undoMockUpEffects, undo_mockup_effects</td>
+        <td>Undos the effects mocking up</td>
+      </tr>
+      <tr>
+        <td>withMockedEffects(callback[, scope])</td>
+        <td>with_mocked_effects(...)</td>
+        <td></td>
+        <td>Wrappes the callback run with the effects mocking/unmocking calls.</td>
+      </tr>
+      <tr>
+        <td>mockupAjax(options)</td>
+        <td>mockup_ajax(...)</td>
+        <td>mockUpAjax</td>
+        <td>Mocks up XHRs to make them return a predefined result.</td>
+      </tr>
+      <tr>
+        <td>undoAjaxMockup()</td>
+        <td>undo_ajax_mockup()</td>
+        <td>undoMockUpAjax, undoMockupAjax, undo_mockup_ajax</td>
+        <td>Undos an ajax mockuping</td>
+      </tr>
+      <tr>
+        <td>withMockedAjax(options, callback[, scope])</td>
+        <td>with_mocked_ajax(...)</td>
+        <td></td>
+        <td>Wrappes the callback run with an ajax mocking up/down with the given options</td>
+      </tr>
+    </table>
+  </p>
+  <p>&nbsp;</p>
+  
+  <p>
+    And this is still not all of the sweets. At the end we have got a good bunch of methods which allows you to
+    easily fire test events on your elements. Each method fires it's event on the given element and returns the fired
+    event instance. See the <a href="fires.html">Events Firing Description</a> for more details
+  </p>
+  
+  <p>
+    <table class="methods-list">
+      <caption>Mouse Events Firging Functionality</caption>
+      <tr>
+        <th>Camelized</th>
+        <th>Underscored</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>fireMouseEvent(element, eventName[, options])</td>
+        <td>fire_mouse_event(...)</td>
+        <td>Firest the given event on the given element</td>
+      </tr>
+      <tr>
+        <td>fireClick(element[, options])</td>
+        <td>fire_click(...)</td>
+        <td>A shortcut. Fires the usual left-click event on the element</td>
+      </tr>
+      <tr>
+        <td>fireMiddleClick(element[, options])</td>
+        <td>fire_middle_click(...)</td>
+        <td>A shortcut. Fires the middle-click event on the element. Doesn't work with IE</td>
+      </tr>
+      <tr>
+        <td>fireRightClick(element[, options])</td>
+        <td>fire_right_click(...)</td>
+        <td>A shortcut. Fires the right-click event on the element. <br/>NOTE: Doesn't work in Opera. <br/>NOTE: Rises 'contextmenu' event in IE</td>
+      </tr>
+      <tr>
+        <td>fireDoubleClick(element[, options])</td>
+        <td>fire_double_click(...)</td>
+        <td>A shortcut. Fires the double-click event on the element</td>
+      </tr>
+      <tr>
+        <td>fireMouseDown(element[, options])</td>
+        <td>fire_mouse_down(...)</td>
+        <td>A shortcut. Fires the mouse-down event on the element</td>
+      </tr>
+      <tr>
+        <td>fireMouseUp(element[, options])</td>
+        <td>fire_mouse_up(...)</td>
+        <td>A shortcut. Fires the mouse-up event on the element</td>
+      </tr>
+      <tr>
+        <td>fireMouseOver(element[, options])</td>
+        <td>fire_mouse_over(...)</td>
+        <td>A shortcut. Fires the mouse-over event on the element</td>
+      </tr>
+      <tr>
+        <td>fireMouseOut(element[, options])</td>
+        <td>fire_mouse_out(...)</td>
+        <td>A shortcut. Fires the mouse-out event on the element</td>
+      </tr>
+    </table>
+    <br/>
+    <table class="methods-list">
+      <caption>Keyboard Events Firging Functionality</caption>
+      <tr>
+        <th>Camelized</th>
+        <th>Underscored</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>fireKeyEvent(element, eventName, keyCode[, options])</td>
+        <td>fire_key_event(...)</td>
+        <td>Fires the given key-event on the given element.</td>
+      </tr>
+      <tr>
+        <td>fireKeyPress(element, keyCode[, options])</td>
+        <td>fire_key_press(...)</td>
+        <td>A shortcut. fires the key-press on the element</td>
+      </tr>
+      <tr>
+        <td>fireKeyDown(element, keyCode[, options])</td>
+        <td>fire_key_down(...)</td>
+        <td>A shortcut. Fires the key-down event on the element</td>
+      </tr>
+      <tr>
+        <td>fireKeyUp(element, keyCode[, options])</td>
+        <td>fire_key_up(...)</td>
+        <td>A shortcut. Fires the key-up event on the element</td>
+      </tr>
+    </table>
+  </p>
+  
+  <p>
+    Since the version 2.0, there is some internal util which might be usefull for your tests.
+    You can call the methods from the <code>this.util</code> object inside the test-cases or
+    by calling the <code>TestCaseUtil</code> object.
+  </p>
+  <p>
+    <table class="methods-list">
+      <caption>Some Internal Util Methods</caption>
+      <tr>
+        <th>Method</th>
+        <th>Descrpition</th>
+      </tr>
+      <tr>
+        <td>create_class([parent, ]definition);</td>
+        <td>Creates new class object</td>
+      </tr>
+      <tr>
+        <td>extend(object, definitions[, boolean dont_overwrite])</td>
+        <td>Extends teh object with the given definitions. NOTE: will overwrite the existing attributes if the third argument is not true</td>
+      </tr>
+      <tr>
+        <td>equal(mixed value1, mixed value2)</td>
+        <td>Checks if the values are _internally_ equal. NOTE: they are not have to be the same object.</td>
+      </tr>
+      <tr>
+        <td>to_a(iterable)</td>
+        <td>Converts the iterable object into an array</td>
+      </tr>
+      <tr>
+        <td>to_s(mixed value)</td>
+        <td>Simple value to string representation</td>
+      </tr>
+      <tr>
+        <td>debug(mixed value)</td>
+        <td>One-Level, non-recoursive value to string representation.</td>
+      </tr>
+      <tr>
+        <td>to_pretty_s(mixed value)</td>
+        <td>Creates a nice string representation of the given value</td>
+      </tr>
+      <tr>
+        <td>get_object_class_name(mixed value)</td>
+        <td>Returns a string class-name for the given value (returns 'Null' for null and 'Boolean' for booleans)</td>
+      </tr>
+      <tr>
+        <td>get_class_name(Object class)</td>
+        <td>Returns the string name for the given class</td>
+      </tr>
+      <tr>
+        <td>Browswer.IE | Opera | WebKit | Gecko | MobileSafari | Konqueror</td>
+        <td>The current browser markers</td>
+      </tr>
+      <tr>
+        <td>Element.visible(element)</td>
+        <td>Checks if the element is visible</td>
+      </tr>
+      <tr>
+        <td>Element.up(element, css_rule)</td>
+        <td>Search for the parent element which matches the css-rule</td>
+      </tr>
+      <tr>
+        <td>Element.down(element, css_rule)</td>
+        <td>Search for the child element which matches the css-rule</td>
+      </tr>
+      <tr>
+        <td>Element.select(element, css_rule)</td>
+        <td>Select all the child elements which match the css-rule</td>
+      </tr>
+      <tr>
+        <td>Element.has_class_name(element, class_name)</td>
+        <td>Checks if the given element has the given css class-name</td>
+      </tr>
+    </table>
+  </p>
+  <p>
+    <b>NOTE:</b> the element selectors are virtual, they support css/css2 and most of css3 level specs (except some pseudoclasses) and works not on the
+    page elements only but on in-memory elements which are not on the page yet as well.
+  </p>
+  
+  <p>&nbsp;</p>
+</body>
+</html>

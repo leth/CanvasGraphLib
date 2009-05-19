@@ -1,0 +1,23 @@
+Welcome to TestCase!
+
+TestCase is a light and easy to use unit-testing system for your JavaScript
+code. Former versions were dependent on the Prototype library, but since version
+2.0, the project is framework free.
+
+The files structure:
+
+doc/ - documentation directory
+lib/ - thirt party software directory
+src/ - the project's source code directory
+test/ - the project tests
+README - this file
+LICENSE - the project's license
+
+
+The source code had been successfully tested on the following environments
+
+FireFox 1.5, 2, 3
+IE 6, 7
+Safari 3
+Opera 9
+Konqueror 3.5.8
