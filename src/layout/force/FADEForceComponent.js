@@ -4,7 +4,7 @@ var FADEForceComponent = new Class({
 });
 
 var FADELevel = new Class({
-	Extends: TreeLevel
+	Extends: CanvasTreeLevel
 	
 	
 });

@@ -7,19 +7,19 @@ var GraphElement = new Class({
 	}
 });
 
+
 var GraphNode = new Class({
 	Extends: GraphElement,
-	Implements: Events,
+	Implements: [CanvasTreeNode,Events],
 	
-	// Variables
-	x: null,
-	y: null,
 	r: 5,
 	mouseOver: false,
 	
 	// Methods
-	initialize: function(id){
+	initialize: function(id, x, y){
 		this.parent(id);
+		this.x = x;	this.y = y;
+		
 		this.addEvent('mouseIn', function(){
 			this.mouseOver = true;
 		});

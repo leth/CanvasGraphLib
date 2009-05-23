@@ -1,4 +1,0 @@
-* Adjust frame rate based on amount of energy in system.
-* Separate out layouters into classes.
-
-* Think up UML
