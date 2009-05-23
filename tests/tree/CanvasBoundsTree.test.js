@@ -11,7 +11,7 @@
 			
 			this.assert_nothing_thrown(function(){	new CanvasBoundsTree(document.createElement('canvas')); });
 		},
-		test_add_nodes: function() {
+		test_add_nodes_toplevel: function() {
 			var canvas = document.createElement('canvas');
 			canvas.width = 5; canvas.height = 5;
 			
@@ -31,8 +31,8 @@
 			this.assert_null(tree.root.children[3]);
 			
 			this.assert_equal(tree.root.children[0].nodes, [nodes[1]]);
-			delete node4;
-			
+		},
+		test_add_nodes_sublevel: function(){
 			// Check sublevel assignments
 			var canvas = document.createElement('canvas');
 			canvas.width = 10; canvas.height = 10;
@@ -53,8 +53,8 @@
 			canvas.width = 1; canvas.height = 1;
 			
 			var tree = new CanvasBoundsTree(canvas);
-			tree.add_nodes([new SizedCanvasTreeNode(0, 0, 0), new SizedCanvasTreeNode(1, 1, 0),
-			                new SizedCanvasTreeNode(2, 0, 1), new SizedCanvasTreeNode(3, 1, 1)]);
+			tree.add_nodes([new SizedCanvasTreeNode(0, 0, 0, 1, 1), new SizedCanvasTreeNode(1, 1, 0, 1, 1),
+			                new SizedCanvasTreeNode(2, 0, 1, 1, 1), new SizedCanvasTreeNode(3, 1, 1, 1, 1)]);
 			
 			this.assert_equal(tree.root.children, {});
 		}

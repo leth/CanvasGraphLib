@@ -16,22 +16,6 @@ var SizedCanvasTreeNode = new Class({
 	get_sizes: function() {
 		return {x: [this.w/2, this.w/2],
 	 	        y: [this.h/2, this.h/2]};
-	},
-	
-	contains_point: function(x, y) {
-		var s = this.get_sizes();
-		
-		if (x > this.x - s.x[0] && 
-		    x < this.x + s.x[1] &&
-		    y > this.y - s.y[0] &&
-		    y < this.y + s.y[1]) {
-			
-			var xd = this.x - x;
-			var yd = this.y - y;
-			return Math.sqrt(xd*xd + yd*yd);
-		} else {
-			return false;
-		}
 	}
 });
 

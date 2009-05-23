@@ -1,3 +1,24 @@
+var InteractiveCanvasNode = new Class({
+	Extends: SizedCanvasTreeNode,
+	Implements: Events,
+	
+	contains_point: function(x, y) {
+		var s = this.get_sizes();
+		
+		if (x >= this.x - s.x[0] && 
+		    x <= this.x + s.x[1] &&
+		    y >= this.y - s.y[0] &&
+		    y <= this.y + s.y[1]) {
+			
+			var xd = this.x - x;
+			var yd = this.y - y;
+			return Math.sqrt(xd*xd + yd*yd);
+		} else {
+			return false;
+		}
+	}
+});
+
 var CanvasMouseEventTree = new Class({
 	Extends: CanvasBoundsTree,
 	
@@ -16,7 +37,7 @@ var CanvasMouseEventTree = new Class({
 	mouseButtonAction: function(event){
 		var pos = event.target.getPosition();
 		var x = event.page.x - pos.x;
-		var y = event.page.y - pos.y -1;
+		var y = event.page.y - pos.y;
 		var type = event.type;
 		
 		var targets = this.getTargetCandidates(this.root, x, y);
@@ -40,8 +61,7 @@ var CanvasMouseEventTree = new Class({
 		var y = event.page.y - pos.y -1;
 		
 		var targets = this.getTargetCandidates(this.root, x, y);
-		var repaint = false;
-		
+
 		if (targets.length != 0) {
 
 			targets.sort(function(a,b){
@@ -55,29 +75,28 @@ var CanvasMouseEventTree = new Class({
 			
 			if (this.currentMouseOver != targets[0].node) {
 				if (this.currentMouseOver != null) {
-					this.currentMouseOver.fireEvent('mouseOut', event);
+					this.currentMouseOver.fireEvent('mouseout', event);
 				}
 				
 				this.currentMouseOver = targets[0].node;
-				this.currentMouseOver.fireEvent('mouseIn', event);
-				repaint = true;
+				this.currentMouseOver.fireEvent('mousein', event);
+				// TODO do we want to fire a mouse move upon entering?
 			} else {
-				this.currentMouseOver.fireEvent('mouseMove', event);
+				this.currentMouseOver.fireEvent('mousemove', event);
 			}
 		} else {
 			if (this.currentMouseOver != null) {
-				this.currentMouseOver.fireEvent('mouseOut', event);
+				// TODO do we want to fire a mouse move upon exiting?
+				this.currentMouseOver.fireEvent('mouseout', event);
 				this.currentMouseOver = null;
-				
-				repaint = true;
 			}
 		}
-		
-		if (repaint)
-			this.engine.paint();
 	},
 	getTargetCandidates: function(level, x, y){
 		var out = [];
+		if (level == null)
+			return out;
+		
 		for (var i = 0; i < level.nodes.length; i++) {
 			var node = level.nodes[i];
 			
@@ -86,8 +105,8 @@ var CanvasMouseEventTree = new Class({
 				out.push({distance: d, node: node});
 		}
 		
-		var dummy_node = {x: x, y: y, get_sizes: function(){return 0;}};
-		var child = level.classify(dummy_node);
+		var dummy_node = {x: x, y: y, get_sizes: function(){return {x:[0,0], y:[0,0]};}};
+		var child = level._classify(dummy_node);
 		
 		if (level.children[child] != null)
 			out = out.concat(this.getTargetCandidates(level.children[child], x, y));
