@@ -8,7 +8,7 @@ var GraphEngine = new Class({
 	// Variables
 	width: 0,
 	height: 0,
-	period: 100,
+	period: 5000,
 	
 	running: false,
 	timerID: null,
@@ -32,6 +32,7 @@ var GraphEngine = new Class({
 		this.height = elem.width;
 		
 		this.layoutEngine = new ForceLayoutEngine();
+		this.mouseTree = new CanvasMouseEventTree(elem);
 	},
 	step: function() {
 		this.layoutEngine.preLayoutStep();
@@ -41,15 +42,15 @@ var GraphEngine = new Class({
 		this.layoutEngine.paint(this.elem);
 		this.paint();
 		
-		var e = 1 / energy;
-		if (e < 5)
-			this.period = 50;
-		else if (e < 10)
-			this.period = 100;
-		else if (e < 20)
-			this.period = 300;
-		else
-			this.period = 500;
+		// var e = 1 / energy;
+		// if (e < 5)
+		// 	this.period = 50;
+		// else if (e < 10)
+		// 	this.period = 100;
+		// else if (e < 20)
+		// 	this.period = 300;
+		// else
+		// 	this.period = 500;
 		
 		// if (window.foo == null)
 		// 	window.foo = 1
@@ -61,8 +62,8 @@ var GraphEngine = new Class({
 	nonEdgeForces: function() {
 		// TODO move
 		if (this.tree == null)
-			this.tree = new MouseEventTree(this.elem, this);
-		this.tree.partition();
+			this.tree = new CanvasTree(this.elem);
+		this.tree.add_nodes(this.nodes)
 		
 		var l = this.tree.root;
 		
@@ -85,6 +86,7 @@ var GraphEngine = new Class({
 		$('text').set('html',f(l));
 	},
 	paint: function() {
+		console.log('paint');
 		var ctx = this.elem.getContext("2d");
 		ctx.clearRect(0,0,this.elem.width,this.elem.height);
 		ctx.fillStyle = "rgb(240,240,240)";
@@ -144,6 +146,9 @@ var GraphEngine = new Class({
 		this.nodes[node.id] = node;
 		var self = this;
 		
+		var mouseInOut = function() {
+			self.paint();
+		}
 		var mousemove = function(event){
 			var pos = event.page;
 			var diff = [];
@@ -166,6 +171,9 @@ var GraphEngine = new Class({
 			self.elem.addEvent('mousemove', mousemove);
 			self.dragPos = event.page;
 		});
+		node.addEvent('mousein', mouseInOut);
+		node.addEvent('mouseout', mouseInOut);
+		this.mouseTree.add_node(node);
 	},
 	getNodes: function() {
 		return this.nodes;

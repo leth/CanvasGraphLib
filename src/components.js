@@ -1,29 +1,18 @@
-var GraphElement = new Class({
-	initialize: function(id){
-		this.id = id;
-	},
-	paint: function(ctx){
-		// Placeholder
-	}
-});
-
-
 var GraphNode = new Class({
-	Extends: GraphElement,
-	Implements: [CanvasTreeNode,Events],
+	Extends: InteractiveCanvasNode,
+	Implements: Events,
 	
-	r: 5,
+	r: 10,
 	mouseOver: false,
 	
 	// Methods
 	initialize: function(id, x, y){
-		this.parent(id);
-		this.x = x;	this.y = y;
+		this.parent(id, x, y, this.r *2, this.r *2);
 		
-		this.addEvent('mouseIn', function(){
+		this.addEvent('mousein', function(){
 			this.mouseOver = true;
 		});
-		this.addEvent('mouseOut', function(){
+		this.addEvent('mouseout', function(){
 			this.mouseOver = false;
 		});
 	},
@@ -46,7 +35,6 @@ var GraphNode = new Class({
 });
 
 var GraphEdge = new Class({
-	Extends: GraphElement,
 	
 	// Variables
 	start: null,
@@ -54,7 +42,7 @@ var GraphEdge = new Class({
 	
 	// Functions
 	initialize: function(id, start, end){
-		this.parent(id);
+		this.id = id;
 		
 		this.start = start;
 		this.end = end;
