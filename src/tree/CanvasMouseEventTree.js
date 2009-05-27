@@ -79,7 +79,7 @@ var CanvasMouseEventTree = new Class({
 				}
 				
 				this.currentMouseOver = targets[0].node;
-				this.currentMouseOver.fireEvent('mousein', event);
+				this.currentMouseOver.fireEvent('mouseover', event);
 				// TODO do we want to fire a mouse move upon entering?
 			} else {
 				this.currentMouseOver.fireEvent('mousemove', event);

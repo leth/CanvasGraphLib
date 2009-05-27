@@ -8,7 +8,7 @@ var GraphEngine = new Class({
 	// Variables
 	width: 0,
 	height: 0,
-	period: 5000,
+	period: 500,
 	
 	running: false,
 	timerID: null,
@@ -42,15 +42,15 @@ var GraphEngine = new Class({
 		this.layoutEngine.paint(this.elem);
 		this.paint();
 		
-		// var e = 1 / energy;
-		// if (e < 5)
-		// 	this.period = 50;
-		// else if (e < 10)
-		// 	this.period = 100;
-		// else if (e < 20)
-		// 	this.period = 300;
-		// else
-		// 	this.period = 500;
+		var e = 1 / energy;
+		if (e < 5)
+			this.period = 50;
+		else if (e < 10)
+			this.period = 100;
+		else if (e < 20)
+			this.period = 300;
+		else
+			this.period = 500;
 		
 		// if (window.foo == null)
 		// 	window.foo = 1
@@ -86,7 +86,6 @@ var GraphEngine = new Class({
 		$('text').set('html',f(l));
 	},
 	paint: function() {
-		console.log('paint');
 		var ctx = this.elem.getContext("2d");
 		ctx.clearRect(0,0,this.elem.width,this.elem.height);
 		ctx.fillStyle = "rgb(240,240,240)";
@@ -162,16 +161,17 @@ var GraphEngine = new Class({
 			self.paint();
 		};
 		var mouseup = function(event){
-			self.elem.removeEvent('mousemove', mousemove);
-			node.removeEvent('mouseup', arguments.callee);
+			window.removeEvent('mousemove', mousemove);
+			window.removeEvent('mouseup', arguments.callee);
 			self.dragPos = null;
 		};
 		node.addEvent('mousedown',function(event){
-			node.addEvent('mouseup', mouseup);
-			self.elem.addEvent('mousemove', mousemove);
 			self.dragPos = event.page;
+			
+			window.addEvent('mouseup', mouseup);
+			window.addEvent('mousemove', mousemove);
 		});
-		node.addEvent('mousein', mouseInOut);
+		node.addEvent('mouseover', mouseInOut);
 		node.addEvent('mouseout', mouseInOut);
 		this.mouseTree.add_node(node);
 	},

@@ -65,14 +65,14 @@
 			this.assert_called(dummy, 'test1', function(){ this.fire_click(     canvas, { pointerX: 2, pointerY: 2}); }, this);
 			node.removeEvent('click',     testFunc1);
 
-			node.addEvent('mousein',   testFunc1);
+			node.addEvent('mouseover',   testFunc1);
 			node.addEvent('mouseout',  testFunc2);
 			this.assert_called([[dummy, 'test1'],[dummy, 'test2']], function(){
 				this.fire_mouse_move( canvas, { pointerX: 0, pointerY: 0});
 				this.fire_mouse_move( canvas, { pointerX: 2, pointerY: 2});
 				this.fire_mouse_move( canvas, { pointerX: 4, pointerY: 4});
 			}, this);
-			node.removeEvent('mousein',   testFunc1);
+			node.removeEvent('mouseover',   testFunc1);
 			node.removeEvent('mouseout',  testFunc2);
 			
 			node.addEvent('mousemove', testFunc1);

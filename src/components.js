@@ -9,7 +9,7 @@ var GraphNode = new Class({
 	initialize: function(id, x, y){
 		this.parent(id, x, y, this.r *2, this.r *2);
 		
-		this.addEvent('mousein', function(){
+		this.addEvent('mouseover', function(){
 			this.mouseOver = true;
 		});
 		this.addEvent('mouseout', function(){
