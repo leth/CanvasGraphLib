@@ -106,7 +106,7 @@ var CanvasMouseEventTree = new Class({
 		}
 		
 		var dummy_node = {x: x, y: y, get_sizes: function(){return {x:[0,0], y:[0,0]};}};
-		var child = level._classify(dummy_node);
+		var child = level._classify_node(dummy_node);
 		
 		if (level.children[child] != null)
 			out = out.concat(this.getTargetCandidates(level.children[child], x, y));

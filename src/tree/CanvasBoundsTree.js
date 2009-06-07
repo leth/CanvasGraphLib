@@ -35,17 +35,22 @@ var CanvasBoundsTree = new Class({
 var CanvasBoundsTreeLevel = new Class({
 	Extends: CanvasTreeLevel,
 	
-	_classify: function(node) {
+	_classify_node: function(node) {
 		var middleTop = this.x + this.w /2;
 		var middleSide = this.y + this.h /2;
 		var child = null;
 		var s = node.get_sizes();
 		
+		// TODO is this right?
+		if (node.x < this.x || node.x > this.x + this.w ||
+			node.y < this.y || node.y > this.y + this.h)
+			return false;
+		
 		// If the node lies across the horizontal or vertical center lines then add it to the current level
 		if (node.x - s.x[0] <= middleTop  && node.x + s.x[1] >= middleTop)
-			child = -1;	
+			child = true;
 		if (node.y - s.y[0] <= middleSide && node.y + s.y[1] >= middleSide)
-			child = -1;
+			child = true;
 		
 		if (child == null)
 			child = (node.x < middleTop ? 0 : 1) + (node.y < middleSide ? 0 : 2);

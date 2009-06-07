@@ -1,8 +1,8 @@
 isA = function (obj, klass) {
 	if (obj.constructor && klass)
 		return obj.constructor == klass;
-	return false
-}
+	return false;
+};
 
 var GraphEngine = new Class({
 	// Variables
@@ -63,7 +63,7 @@ var GraphEngine = new Class({
 		// TODO move
 		if (this.tree == null)
 			this.tree = new CanvasTree(this.elem);
-		this.tree.add_nodes(this.nodes)
+		this.tree.add_nodes(this.nodes);
 		
 		var l = this.tree.root;
 		
@@ -98,17 +98,17 @@ var GraphEngine = new Class({
 			this.edges[id].paint(ctx);
 			
 		// TODO move this to it's own method
-		// ctx.strokeStyle = "rgb(0,0,0)";
-		// var l = this.tree.root;
-		// var f = function(level, ctx){
-		// 	ctx.strokeRect(level.x, level.y, level.w, level.h);
-		// 	
-		// 	for (var i in level.children){
-		// 		if (level.children[i] != null)
-		// 			f(level.children[i], ctx);
-		// 	}
-		// };
-		// f(l, ctx);
+		ctx.strokeStyle = "rgb(0,0,0)";
+		var l = this.mouseTree.root;
+		var f = function(level, ctx){
+			ctx.strokeRect(level.x, level.y, level.w, level.h);
+			
+			for (var i in level.children){
+				if (level.children[i] != null)
+					f(level.children[i], ctx);
+			}
+		};
+		f(l, ctx);
 	},
 	paintNodes: function(ctx) {
 		for (id in this.nodes)
@@ -147,7 +147,7 @@ var GraphEngine = new Class({
 		
 		var mouseInOut = function() {
 			self.paint();
-		}
+		};
 		var mousemove = function(event){
 			var pos = event.page;
 			var diff = [];
@@ -164,6 +164,8 @@ var GraphEngine = new Class({
 			window.removeEvent('mousemove', mousemove);
 			window.removeEvent('mouseup', arguments.callee);
 			self.dragPos = null;
+			
+			self.mouseTree.reclassify_node(node);
 		};
 		node.addEvent('mousedown',function(event){
 			self.dragPos = event.page;

@@ -43,13 +43,85 @@ var CanvasTree = new Class({
 	 * @param nodes array<? implements CanvasTreeNode> An array of objects which implement CanvasTreeNode.
 	 * @return this
 	 */
+	// add_nodes: function(nodes) {
+	// 	
+	// 	this.root.add_nodes(nodes);
+	// 	return this;
+	// },
 	add_nodes: function(nodes) {
-		if (this.root == null){
+		if (this.root == null)
 			this.root = new window[this.options.treeLevelClass](this, null, 0, 0, this.canvas.width, this.canvas.height);
-		}
 		
-		this.root.add_nodes(nodes);
+		var queue = [];
+		// Add all nodes to the root.
+		// This allows for more efficient stuff in the queue processing later
+		for (var i = 0; i < nodes.length; i++)
+			queue.push({'n': nodes[i], 'l': this.root});
+		
+		// process the queue
+		this._add_nodes_with_hints(queue);
+		
 		return this;
+	},
+	/**
+	 * PRIVATE: Add nodes into the tree non-recursively.
+	 * @param queue array<Map<string,CanvasTreeNode|CanvasTreeLevel>> queue of nodes to be added. 
+	 *        Each item in the list is a map of the form {n: node, l: level} where level is a hint at the level this node should be inserted at.
+	 * @return void
+	 */
+	_add_nodes_with_hints: function(queue) {
+		// Which nodes have been classified to a certain level
+		var classified = {};
+		
+		for (var i = 0; i < queue.length; i++){
+			var node = queue[i].n;
+			var level = queue[i].l;
+			
+			while (level != null)
+			{
+				// If this level is the minimum size, don't create any more sublevels
+				if (level.w * level.h <= level.options.minimum_area) {
+					level._adopt_node(node);
+					break;
+				}
+
+				// If there are no nodes at this level (and we haven't already subdivided) don't subdivide.
+				if (level.nodes.length == 0 && ! level._has_children()) {
+					level._adopt_node(node);
+					break;
+				}
+
+				// If there is a node at this level add it back into classification because we are going to make sublevels
+				if (level.nodes.length > 0) {
+					var newNodes = [];
+					
+					for (var j=0; j < level.nodes.length; j++) {
+						// If nodes have already been classified this time round and been told to stay here, don't disturb them
+						if (classified[level.nodes[j].id] != null)
+							newNodes.push(level.nodes[j]);
+						else {
+							// hint at the level classification should start at
+							queue.push({'n': level.nodes[j], 'l': level});
+						}
+					}
+					
+					level.nodes = newNodes;
+				}
+				
+				var index = level._classify_node(node);
+				
+				// true indicates that the node should be kept in the current level
+				if (index === true) {
+					level._adopt_node(node);
+					classified[node.id] = true;
+					break;
+				} else if (index === false) {
+					throw "Assertion 'index != false' failed";
+				} else {
+					level = level._create_child_level(index);
+				}
+			}
+		}
 	},
 	remove_node: function(node){
 		this.node_id_to_level[node.id]._unadopt_node(node);
@@ -58,7 +130,57 @@ var CanvasTree = new Class({
 	remove_nodes: function(nodes){
 		nodes.each(this.remove_node, this);
 		return this;
-	}
+	},
+	reclassify_node: function(node){
+		var level = this.node_id_to_level[node.id];
+		
+		while (true)
+		{
+			var index = level._classify_node(node);
+			
+			if (index === true)
+			{	// It's ok at this level
+				
+				// Don't move it unless it didn't come from here.
+				if (this.node_id_to_level[node.id] !== level)
+					level._adopt_node(node);
+					
+				break;
+			}
+			else if (index === false)
+			{	// Send it up to a parent
+				
+				// If it came from this node first remove it from here
+				if (this.node_id_to_level[node.id] === level) {
+					var newNodes = [];
+					for (var j=0; j < level.nodes.length; j++) {
+						if (level.nodes[j] !== node)
+							newNodes.push(level.nodes[j]);
+					}
+					level.nodes = newNodes;
+				}
+				
+				// If this level is now empty, remove the level.
+				if (! level._has_children() && level.nodes.length == 0)
+					level.parent._remove_child_level(level);
+				
+				level = level.parent;
+			}
+			else
+			{	// A quad was specified
+				
+				// Don't bother making needsless sublevels
+				if (level.nodes.length == 1 && level.nodes[0] === node && !level._has_children())
+					break;
+				
+				// Add it to a sublevel
+				this._add_nodes_with_hints([{'n': node, 'l': level._create_child_level(index)}]);
+				break;
+			}
+		}
+		
+		return this;
+	}	
 });
 
 var CanvasTreeLevel = new Class({
@@ -72,7 +194,6 @@ var CanvasTreeLevel = new Class({
 	options: {
 		minimum_area: 1
 	},
-	
 	/**
 	 * Initialize the object
 	 * @param owner CanvasTree The owning CanvasTree for this level.
@@ -89,81 +210,17 @@ var CanvasTreeLevel = new Class({
 		this.y = y; this.h = h;
 	},
 	/**
-	 * Add a collection of nodes to the tree
-	 * @param nodes array<? implements CanvasTreeNode> A collection of nodes to add.
-	 * @return this.
-	 */
-	add_nodes: function(nodes) {
-		// If this level is the minimum size, don't create any more sublevels
-		if (this.w * this.h <= this.options.minimum_area) {
-			for (var i = 0; i < nodes.length; i++)
-				this._adopt_node(nodes[i]);
-			return;
-		}
-		
-		// If there are no nodes at this point and only one left to add, do so.
-		if (nodes.length == 1 && this.nodes.length == 0) {
-			this._adopt_node(nodes[0]);
-			return;
-		}
-		
-		// Add adopted node back into classification because we are going to make sublevels
-		// If we have not reached minimum size there should only be 1 node in here max.
-		// If we are subclassed to support holding nodes at non-leaf levels then this will only reclassify if there is only one node at this level.  
-		if (this.nodes.length == 1) {
-			nodes.push(this.nodes[0]);
-			this.nodes = [];
-		}
-		
-		var childMap = {};
-		// Classify the nodes into different child levels
-		for (var i = 0; i < nodes.length; i++) {
-			var index = this._classify(nodes[i]);
-			if (childMap[index] == null)
-				childMap[index] = [];
-			
-			childMap[index].push(nodes[i]);
-		}
-		
-		for (var index in childMap){
-			if (index == -1) {
-				// -1 indicates that the node should be kept in the current level
-				// TODO may want to optimise this so they don't get reclassified each time.
-				for (var i = 0; i < childMap[index].length; i++){
-					this._adopt_node(childMap[index][i]);
-				}
-			} else {
-				if (childMap[index].length > 0)
-					this._add_nodes_to_child(childMap[index], index);
-			}
-		}
-		return this;
-	},
-	/**
-	 * Add nodes to the specified child level
-	 * @param nodes array<CanvasTreeNode> Array of nodes to add
-	 * @param child int Index of the child level
-	 */
-	_add_nodes_to_child: function(nodes, child) {
-		if (this.children[child] == null){
-			var x, y;
-			
-			if (child == 0 || child == 2)	x = this.x;	else	x = this.x + this.w /2;
-			if (child == 0 || child == 1)	y = this.y;	else	y = this.y + this.h /2;
-			
-			this.children[child] = new this.constructor(this.owner, this, x, y, this.w /2, this.h /2);
-		}
-		
-		this.children[child].add_nodes(nodes);
-	},
-	/**
 	 * Calculate which quadrant of the CanvasQuadTreeLevel the node should fall into
 	 * @node CanvasTreeNode Node to classify
-	 * @return int 0-3 quadrants 0 to 3, -1 node should stay at this level.
+	 * @return int 0-3 quadrants 0 to 3, true node should stay at this level, false does not belong in this level or its children.
 	 */
-	_classify: function(node) {
+	_classify_node: function(node) {
 		var middleTop = this.x + this.w /2;
 		var middleSide = this.y + this.h /2;
+		
+		if (node.x < this.x || node.x > this.x + this.w ||
+			node.y < this.y || node.y > this.y + this.h)
+			return false;
 		
 		return (node.x < middleTop ? 0 : 1) + (node.y < middleSide ? 0 : 2);
 	},
@@ -174,5 +231,43 @@ var CanvasTreeLevel = new Class({
 	_unadopt_node: function(node) {
 		this.nodes = this.nodes.erase(node);
 		delete this.owner.node_id_to_level[node.id];
+	},
+	/**
+	 * Create the specified child level (if needed)
+	 * @param child int Index of the child level
+	 * @return CanvasTreeLevel the child level
+	 */
+	_create_child_level: function(quad) {
+		if (this.children[quad] == null) {
+			var x, y;
+			if (quad == 0 || quad == 2)
+				x = this.x;
+			else
+				x = this.x + this.w /2;
+
+			if (quad == 0 || quad == 1)
+				y = this.y;
+			else
+				y = this.y + this.h /2;
+				
+			this.children[quad] = new this.constructor(this.owner, this, x, y, this.w /2, this.h /2);
+		}
+		return this.children[quad];
+	},
+	_remove_child_level: function(level) {
+		if ($type(level) == 'number') {
+			delete this.children[level];
+		} else {
+			for (var i=0; i < 4; i++) {
+				if (this.children[i] === level){
+					delete this.children[i];
+					break;
+				}
+			}
+		}
+	},
+	_has_children: function() {
+		var c = this.children;
+		return c[0] || c[1] || c[2] || c[3];
 	}
 });
