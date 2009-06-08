@@ -73,12 +73,13 @@
 			this.assert_nothing_thrown(function(){	new CanvasBoundsTreeLevel(null, 0, 0, 1, 1); });
 		},
 		test__classify_node: function() {
-			var treeLevel = new CanvasBoundsTreeLevel(null, null, 0, 0, 1, 1);
+			var treeLevel = new CanvasBoundsTreeLevel(null, null, 0, 0, 2, 2);
 			this.assert_equal(0, treeLevel._classify_node(new SizedCanvasTreeNode(0, 0, 0)));
-			this.assert_equal(1, treeLevel._classify_node(new SizedCanvasTreeNode(0, 1, 0)));
-			this.assert_equal(2, treeLevel._classify_node(new SizedCanvasTreeNode(0, 0, 1)));
-			this.assert_equal(3, treeLevel._classify_node(new SizedCanvasTreeNode(0, 1, 1)));
-			this.assert_equal(true,treeLevel._classify_node(new SizedCanvasTreeNode(0, 0, 0, 1, 1)));
+			this.assert_equal(1, treeLevel._classify_node(new SizedCanvasTreeNode(0, 2, 0)));
+			this.assert_equal(2, treeLevel._classify_node(new SizedCanvasTreeNode(0, 0, 2)));
+			this.assert_equal(3, treeLevel._classify_node(new SizedCanvasTreeNode(0, 2, 2)));
+			this.assert_equal(true,treeLevel._classify_node(new SizedCanvasTreeNode(0, .5, .5, 1, 1)));
+			this.assert_equal(false,treeLevel._classify_node(new SizedCanvasTreeNode(0, 0, 0, 1, 1)));
 		}
 	})
 )).run_on_load();

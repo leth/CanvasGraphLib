@@ -42,8 +42,8 @@ var CanvasBoundsTreeLevel = new Class({
 		var s = node.get_sizes();
 		
 		// TODO is this right?
-		if (node.x < this.x || node.x > this.x + this.w ||
-			node.y < this.y || node.y > this.y + this.h)
+		if (node.x - s.x[0] < this.x || node.x + s.x[1] > this.x + this.w ||
+			node.y - s.y[0] < this.y || node.y + s.y[1] > this.y + this.h)
 			return false;
 		
 		// If the node lies across the horizontal or vertical center lines then add it to the current level

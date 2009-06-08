@@ -27,10 +27,40 @@ var GraphNode = new Class({
 		// ctx.arc(x,y,radius,startAngle,endAngle, clockwise);
 		ctx.arc(this.x, this.y, this.r, 0, 2* Math.PI, true);
 		ctx.fill();
+		
+		if (ctx.strokeText) {
+			ctx.strokeText(this.id,this.x, this.y);
+		} else if (ctx.mozDrawText) {
+			ctx.fillStyle = "rgb(0,0,0)";
+			ctx.font = '10px';
+			ctx.save();
+			var w = ctx.mozMeasureText(this.id);
+			
+			ctx.translate(this.x - (w/2), this.y +5);
+			ctx.mozDrawText(this.id);
+			ctx.restore();
+		}
 	},
 	
-	getSize: function(){
-		return [this.r, this.r];
+	contains_point: function(x, y) {
+		var s = this.get_sizes();
+		
+		if (x >= this.x - s.x[0] && 
+		    x <= this.x + s.x[1] &&
+		    y >= this.y - s.y[0] &&
+		    y <= this.y + s.y[1]) {
+			
+			var xd = this.x - x;
+			var yd = this.y - y;
+			
+			var sq = Math.sqrt(xd*xd + yd*yd);
+			if (sq > this.r)
+				return false;
+				
+			return sq;
+		} else {
+			return false;
+		}
 	}
 });
 

@@ -12,7 +12,10 @@ var InteractiveCanvasNode = new Class({
 			
 			var xd = this.x - x;
 			var yd = this.y - y;
-			return Math.sqrt(xd*xd + yd*yd);
+			
+			var sq = Math.sqrt(xd*xd + yd*yd);
+			
+			return sq;
 		} else {
 			return false;
 		}
